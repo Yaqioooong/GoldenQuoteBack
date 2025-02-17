@@ -3,6 +3,8 @@ package com.yaxingguo.goldenquote.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yaxingguo.goldenquote.entity.Permission;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.yaxingguo.goldenquote.entity.Permission;
  */
 public interface IPermissionService extends IService<Permission> {
 
+    List<String> queryPermissions(Object loginId);
 }

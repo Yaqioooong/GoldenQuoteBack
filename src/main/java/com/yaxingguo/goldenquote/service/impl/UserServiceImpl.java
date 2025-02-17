@@ -60,15 +60,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @SneakyThrows
     @Override
     public User register(RegisterDto dto) {
-        if (dto != null) {
-            User user = new User();
-            user.setUsername(dto.getUsername());
-            user.setPassword(PasswordUtil.hashPassword(AESUtil.decrypt(dto.getPassword(),AES_SECRET_KEY)));
-            user.setRealName(dto.getRealName());
-            user.setStatus(1);
-            save(user);
-            return user;
+        // 校验该用户是否已注册，防止重复注册
+        if (getOne(new QueryWrapper<User>().eq("username", dto.getUsername())) != null) {
+            throw new BusinessException(ErrorConstants.USER_EXIST);
         }
-        return null;
+        //执行注册逻辑
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setPassword(PasswordUtil.hashPassword(AESUtil.decrypt(dto.getPassword(),AES_SECRET_KEY)));
+        user.setRealName(dto.getRealName());
+        user.setStatus(1);
+        save(user);
+        return user;
+
     }
 }

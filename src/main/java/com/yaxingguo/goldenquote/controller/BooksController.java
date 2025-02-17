@@ -1,5 +1,6 @@
 package com.yaxingguo.goldenquote.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaxingguo.goldenquote.annotation.LogExec;
 import com.yaxingguo.goldenquote.constants.ErrorConstants;
@@ -50,6 +51,7 @@ public class BooksController {
 
     @PostMapping("/admin/add")
     @ResponseBody
+    @SaCheckPermission("content:create")
     public ResponseVo addBooks(@RequestBody Books books){
         boolean result = booksService.save(books);
         if (result){
@@ -61,6 +63,7 @@ public class BooksController {
 
     @PostMapping("/admin/update")
     @ResponseBody
+    @SaCheckPermission("content:edit")
     public ResponseVo updateBooks(@RequestBody Books books){
         boolean result = booksService.updateById(books);
         if (result){
@@ -72,6 +75,7 @@ public class BooksController {
 
     @PostMapping("/admin/delete")
     @ResponseBody
+    @SaCheckPermission("content:delete")
     public ResponseVo deleteBooks(@RequestBody Books books){
         boolean result = booksService.removeById(books);
         if (result){

@@ -13,7 +13,7 @@ public enum ErrorConstants {
     LOGIN_USER_NOT_FOND("LOGIN_ERR_002", "该用户不存在"),
     LOGIN_PASSWORD_ERROR("LOGIN_ERR_003", "密码错误"),
     LOGIN_DECRYPT_ERROR("LOGIN_ERR_004", "解密失败"),
-    ;
+    USER_EXIST("REGISTER_ERR_001","用户已存在" );
 
     private String code;
     private String msg;
