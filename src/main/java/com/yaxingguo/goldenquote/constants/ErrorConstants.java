@@ -1,0 +1,33 @@
+package com.yaxingguo.goldenquote.constants;
+
+public enum ErrorConstants {
+
+    SUCCESS("100001", "success"),
+    ADD_BOOKS_ERROR("200001", "添加书籍异常"),
+    UPDATE_BOOKS_ERROR("200002", "更新书籍异常"),
+    DELETE_BOOKS_ERROR("200003", "删除书籍异常"),
+    ADD_QUOTES_ERROR("300001", "添加句子异常"),
+    UPDATE_QUOTES_ERROR("300002", "更新句子异常"),
+    DELETE_QUOTES_ERROR("300003", "删除句子异常"),
+    LOGIN_INFO_ERROR("LOGIN_ERR_001", "登录参数不合法，请重新输入。"),
+    LOGIN_USER_NOT_FOND("LOGIN_ERR_002", "该用户不存在"),
+    LOGIN_PASSWORD_ERROR("LOGIN_ERR_003", "密码错误"),
+    LOGIN_DECRYPT_ERROR("LOGIN_ERR_004", "解密失败"),
+    ;
+
+    private String code;
+    private String msg;
+
+    ErrorConstants(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+}

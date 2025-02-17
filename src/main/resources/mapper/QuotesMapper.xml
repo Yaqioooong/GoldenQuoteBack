@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yaxingguo.goldenquote.mapper.QuotesMapper">
+
+    <resultMap id="BaseResultMap" type="com.yaxingguo.goldenquote.entity.Quotes">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="book_id" jdbcType="INTEGER" property="bookId" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+        <result column="likes" jdbcType="INTEGER" property="likes" />
+        <result column="src_chapter" jdbcType="VARCHAR" property="srcChapter" />
+    </resultMap>
+
+    <sql id="base_column_list">
+        id, book_id, content, add_time, likes, src_chapter
+    </sql>
+    <select id="selectBySelective" resultType="com.yaxingguo.goldenquote.entity.Quotes">
+        select
+        <include refid="base_column_list"></include>
+        from t_quotes
+        where 1=1
+        <if test="bookId != null">
+            and book_id = #{bookId}
+        </if>
+        <if test="page != null and pageSize != null">
+            limit #{page}, #{pageSize}
+        </if>
+    </select>
+
+
+</mapper>
