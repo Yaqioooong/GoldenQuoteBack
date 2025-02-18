@@ -56,7 +56,7 @@ public class QuotesController {
     @RequestMapping(value = "/public/daily",method = RequestMethod.GET)
     @ResponseBody
     public ResponseVo getDailyQuote(){
-         DailyQuoteVo quote = quotesService.getDailyQuote();
+        DailyQuoteVo quote = quotesService.getDailyQuote();
         return ResponseVo.success(quote);
     }
 

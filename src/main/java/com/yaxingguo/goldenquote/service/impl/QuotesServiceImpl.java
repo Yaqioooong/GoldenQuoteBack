@@ -3,12 +3,14 @@ package com.yaxingguo.goldenquote.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yaxingguo.goldenquote.constants.RedisKeyConstants;
 import com.yaxingguo.goldenquote.dto.QueryQuotesDto;
 import com.yaxingguo.goldenquote.entity.Books;
 import com.yaxingguo.goldenquote.entity.Quotes;
 import com.yaxingguo.goldenquote.mapper.BooksMapper;
 import com.yaxingguo.goldenquote.mapper.QuotesMapper;
 import com.yaxingguo.goldenquote.service.IQuotesService;
+import com.yaxingguo.goldenquote.utils.RedisService;
 import com.yaxingguo.goldenquote.vo.DailyQuoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class QuotesServiceImpl extends ServiceImpl<QuotesMapper, Quotes> impleme
     @Autowired
     private BooksMapper booksMapper;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     public Page<Quotes> queryByDto(QueryQuotesDto dto) {
         Page<Quotes> page = new Page<>(dto.getPage(), dto.getPageSize());
@@ -43,6 +48,10 @@ public class QuotesServiceImpl extends ServiceImpl<QuotesMapper, Quotes> impleme
 
     @Override
     public DailyQuoteVo getDailyQuote() {
+        DailyQuoteVo vo = redisService.getObject(RedisKeyConstants.DAILY_QUOTE, DailyQuoteVo.class);
+        if (vo!=null){
+            return vo;
+        }
         DailyQuoteVo dailyQuoteVo = new DailyQuoteVo();
         QueryWrapper<Quotes> wrapper = new QueryWrapper<>();
         wrapper.orderByAsc("rand()").last("limit 1");
@@ -52,6 +61,7 @@ public class QuotesServiceImpl extends ServiceImpl<QuotesMapper, Quotes> impleme
         dailyQuoteVo.setQuotes(quotes);
         dailyQuoteVo.setBookName(books.getBookName());
         dailyQuoteVo.setAuthor(books.getAuthor());
+        redisService.setObject(RedisKeyConstants.DAILY_QUOTE,dailyQuoteVo);
         return dailyQuoteVo;
     }
 
