@@ -26,12 +26,12 @@ public class generator {
                         })
                 )
                 .packageConfig(builder ->
-                        builder.parent("com.yaxingguo.goldenquote.entity") // 设置父包名
+                        builder.parent("com.yaxingguo.goldenquote") // 设置父包名
                                 .moduleName("api/v1") // 设置父包模块名
                                 .pathInfo(Collections.singletonMap(OutputFile.xml, "D:\\YXProjects\\GoldenQuote\\src\\test\\java\\com\\yaxingguo\\goldenquote\\generator\\mybatis\\plus\\mapper")) // 设置mapperXml生成路径
                 )
                 .strategyConfig(builder ->
-                        builder.addInclude("t_log_record")
+                        builder.addInclude("t_user_favorites")
                                 .addTablePrefix("t_", "c_") // 设置过滤表前缀
                 )
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板

@@ -14,6 +14,11 @@
     <sql id="base_column_list">
         id, book_id, content, add_time, likes, src_chapter
     </sql>
+    <update id="incrLikes">
+        UPDATE t_quotes
+        SET likes = likes + 1
+        WHERE id = #{id}
+    </update>
     <select id="selectBySelective" resultType="com.yaxingguo.goldenquote.entity.Quotes">
         select
         <include refid="base_column_list"></include>

@@ -23,4 +23,5 @@ public interface IQuotesService extends IService<Quotes> {
 
     DailyQuoteVo getDailyQuote();
 
+    int updateLikes(Integer quoteId,Integer likes);
 }

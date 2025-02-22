@@ -17,4 +17,6 @@ import java.util.List;
 public interface QuotesMapper extends BaseMapper<Quotes> {
 
     List<Quotes> selectBySelective(QueryQuotesDto dto);
+
+    int incrLikes(Integer quoteId);
 }

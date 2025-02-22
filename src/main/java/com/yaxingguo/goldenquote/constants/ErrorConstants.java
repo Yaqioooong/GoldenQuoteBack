@@ -13,7 +13,12 @@ public enum ErrorConstants {
     LOGIN_USER_NOT_FOND("LOGIN_ERR_002", "该用户不存在"),
     LOGIN_PASSWORD_ERROR("LOGIN_ERR_003", "密码错误"),
     LOGIN_DECRYPT_ERROR("LOGIN_ERR_004", "解密失败"),
-    USER_EXIST("REGISTER_ERR_001","用户已存在" );
+    USER_EXIST("REGISTER_ERR_001","用户已存在" ),
+    ADD_FAVORITES_ERROR("FAVORITE_ERR_001","添加收藏异常"),
+    DUPLICATE_FAVORITE("FAVORITE_ERR_002","重复收藏"),
+    NO_FAVORITE_RECORD("FAVORITE_ERR_003","无收藏记录"),
+    PARAM_ERROR("PARAM_ERR", "请校验参数"),
+    QUOTE_NOT_EXIST("QUOTE_ERR_001","quote不存在" );
 
     private String code;
     private String msg;

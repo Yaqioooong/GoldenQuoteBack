@@ -3,10 +3,12 @@ package com.yaxingguo.goldenquote.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yaxingguo.goldenquote.constants.ErrorConstants;
 import com.yaxingguo.goldenquote.constants.RedisKeyConstants;
 import com.yaxingguo.goldenquote.dto.QueryQuotesDto;
 import com.yaxingguo.goldenquote.entity.Books;
 import com.yaxingguo.goldenquote.entity.Quotes;
+import com.yaxingguo.goldenquote.exception.BusinessException;
 import com.yaxingguo.goldenquote.mapper.BooksMapper;
 import com.yaxingguo.goldenquote.mapper.QuotesMapper;
 import com.yaxingguo.goldenquote.service.IQuotesService;
@@ -14,6 +16,9 @@ import com.yaxingguo.goldenquote.utils.RedisService;
 import com.yaxingguo.goldenquote.vo.DailyQuoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -65,5 +70,19 @@ public class QuotesServiceImpl extends ServiceImpl<QuotesMapper, Quotes> impleme
         return dailyQuoteVo;
     }
 
+    @Override
+    public int updateLikes(Integer quoteId,Integer likes) {
+        // 参数校验
+        if (quoteId == null || likes == null) {
+            throw new BusinessException(ErrorConstants.PARAM_ERROR);
+        }
 
+        Quotes quotes = quotesMapper.selectById(quoteId);
+        if (quotes == null) {
+            throw new BusinessException(ErrorConstants.QUOTE_NOT_EXIST);
+        }
+
+        quotes.setLikes(likes);
+        return quotesMapper.updateById(quotes);
+    }
 }
