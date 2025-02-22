@@ -21,7 +21,7 @@ import java.util.List;
  */
 public interface UserFavoritesMapper extends BaseMapper<UserFavorites> {
 
-    @Select("SELECT q.*,uf.add_time FROM t_quotes q " +
+    @Select("SELECT q.id,q.book_id,q.content,q.likes,q.src_chapter,uf.add_time FROM t_quotes q " +
             "JOIN t_user_favorites uf ON q.id = uf.quote_id " +
             "WHERE uf.user_id = #{userId} " +
             "ORDER BY uf.add_time DESC " +
