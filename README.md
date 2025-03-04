@@ -33,3 +33,7 @@
 ![金句管理页1](./src/main/resources/static/imgs/tg_image_2569851093.png)
 ![金句管理页2](./src/main/resources/static/imgs/tg_image_4022315747.png)
 - 收藏页(todo)
+
+## todos
+- [] 检查已收藏金句，在页面展示，渲染按钮
+- [] 接入流光卡片API，实现金句分享功能（复制和下载图片）

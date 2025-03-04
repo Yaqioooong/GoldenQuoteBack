@@ -1,7 +1,5 @@
 package com.yaxingguo.goldenquote.mapper;
 
-
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaxingguo.goldenquote.entity.UserFavorites;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -21,12 +19,9 @@ import java.util.List;
  */
 public interface UserFavoritesMapper extends BaseMapper<UserFavorites> {
 
-    @Select("SELECT q.id,q.book_id,q.content,q.likes,q.src_chapter,uf.add_time FROM t_quotes q " +
-            "JOIN t_user_favorites uf ON q.id = uf.quote_id " +
-            "WHERE uf.user_id = #{userId} " +
-            "ORDER BY uf.add_time DESC " +
-            "LIMIT #{offset}, #{pageSize}")
+
     List<FavoriteQuotesVo> queryFavoritesWithDetailsByUserId(@Param("userId") Integer userId,
+                                                             @Param("bookId") Integer bookId,
                                                              @Param("offset") Integer offset,
                                                              @Param("pageSize") Integer pageSize);
 

@@ -21,5 +21,6 @@ public interface IUserFavoritesService extends IService<UserFavorites> {
 
     boolean removeUserFavorites(UserFavorites userFavorites);
 
-    PageResult<FavoriteQuotesVo> queryUserFavorites(Integer uerId, Integer page, Integer pageSize);
+    PageResult<FavoriteQuotesVo> queryUserFavorites(Integer uerId, Integer bookId, Integer page, Integer pageSize);
+
 }

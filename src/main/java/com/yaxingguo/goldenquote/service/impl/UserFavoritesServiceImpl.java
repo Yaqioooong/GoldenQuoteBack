@@ -91,7 +91,7 @@ public class UserFavoritesServiceImpl extends ServiceImpl<UserFavoritesMapper, U
     }
 
     @Override
-    public PageResult<FavoriteQuotesVo> queryUserFavorites(Integer userId, Integer page, Integer pageSize) {
+    public PageResult<FavoriteQuotesVo> queryUserFavorites(Integer userId, Integer bookId, Integer page, Integer pageSize) {
         // 参数校验
         if (userId == null) {
             throw new BusinessException(ErrorConstants.PARAM_ERROR);
@@ -105,7 +105,7 @@ public class UserFavoritesServiceImpl extends ServiceImpl<UserFavoritesMapper, U
         // 计算分页参数
         int totalPages = (int) Math.ceil((double)total / pageSize);
         int offset = (page - 1) * pageSize;
-        List<FavoriteQuotesVo> favoriteQuotesVoPage = userFavoritesMapper.queryFavoritesWithDetailsByUserId(userId,offset,pageSize);
+        List<FavoriteQuotesVo> favoriteQuotesVoPage = userFavoritesMapper.queryFavoritesWithDetailsByUserId(userId,bookId,offset,pageSize);
         return new PageResult<>(page,pageSize,total,totalPages,favoriteQuotesVoPage);
     }
 

@@ -2,4 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yaxingguo.goldenquote.mapper.UserFavoritesMapper">
 
+    <select id="queryFavoritesWithDetailsByUserId" resultType="com.yaxingguo.goldenquote.vo.FavoriteQuotesVo">
+        SELECT q.id,q.book_id,q.content,q.likes,q.src_chapter,uf.add_time FROM t_quotes q
+        JOIN t_user_favorites uf ON q.id = uf.quote_id
+        WHERE 1=1
+        <if test="userId > 0">
+           AND uf.user_id = #{userId}
+        </if>
+        <if test="bookId > 0">
+           AND q.book_id = #{bookId}
+        </if>
+        ORDER BY uf.add_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
 </mapper>
