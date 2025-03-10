@@ -1,5 +1,6 @@
 package com.yaxingguo.goldenquote.controller;
 
+import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.yaxingguo.goldenquote.annotation.LogExec;
@@ -43,7 +44,11 @@ public class LoginController {
             if (authenticated == null){
                 return ResponseVo.failure(ErrorConstants.LOGIN_INFO_ERROR);
             }else {
-                StpUtil.login(authenticated.getId());
+                SaLoginModel loginModel = new SaLoginModel();
+                if (dto.isRememberMe()){
+                    loginModel.setTimeout(60 * 60 * 24 * 7);
+                }
+                StpUtil.login(authenticated.getId(),loginModel);
                 SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
                 return ResponseVo.success(tokenInfo);
             }
