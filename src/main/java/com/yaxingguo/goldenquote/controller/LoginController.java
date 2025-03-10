@@ -61,8 +61,8 @@ public class LoginController {
             throw new BusinessException(ErrorConstants.LOGIN_INFO_ERROR);
         }
         try {
-            User authenticated = userService.register(user);
-            if (authenticated == null){
+            User newUser = userService.register(user);
+            if (newUser == null){
                 return ResponseVo.failure(ErrorConstants.LOGIN_INFO_ERROR);
             }else {
                 return ResponseVo.success("注册成功");

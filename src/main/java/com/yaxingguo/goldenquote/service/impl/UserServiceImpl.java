@@ -5,6 +5,7 @@ import com.yaxingguo.goldenquote.constants.ErrorConstants;
 import com.yaxingguo.goldenquote.dto.LoginDto;
 import com.yaxingguo.goldenquote.dto.RegisterDto;
 import com.yaxingguo.goldenquote.entity.User;
+import com.yaxingguo.goldenquote.entity.UserRole;
 import com.yaxingguo.goldenquote.exception.BusinessException;
 import com.yaxingguo.goldenquote.mapper.UserMapper;
 import com.yaxingguo.goldenquote.service.IUserService;
@@ -15,8 +16,10 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
@@ -25,6 +28,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Value("${aes.secret}")
     private String AES_SECRET_KEY;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleServiceImpl userRoleService;
 
     @Override
     public User getUserInfo(User userLogin) {
@@ -59,6 +68,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @SneakyThrows
     @Override
+    @Transactional
     public User register(RegisterDto dto) {
         // 校验该用户是否已注册，防止重复注册
         if (getOne(new QueryWrapper<User>().eq("username", dto.getUsername())) != null) {
@@ -70,7 +80,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(PasswordUtil.hashPassword(AESUtil.decrypt(dto.getPassword(),AES_SECRET_KEY)));
         user.setRealName(dto.getRealName());
         user.setStatus(1);
-        save(user);
+        userMapper.insert(user);
+        if (user.getId() <= 0) {
+            throw new BusinessException(ErrorConstants.REGISTER_FAIL);
+        }
+        // 设置默认角色
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getId());
+        userRole.setRoleId(4);
+        userRoleService.save(userRole);
         return user;
 
     }
