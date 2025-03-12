@@ -2,4 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yaxingguo.goldenquote.mapper.UserMapper">
 
+    <resultMap id="QueryUserVoMap" type="com.yaxingguo.goldenquote.vo.QueryUserVo">
+        <result column="name" property="role"/> <!-- 关键映射 -->
+        <!-- 其他字段自动匹配 -->
+        <result column="real_name" property="realName"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectByCondition"  resultMap="QueryUserVoMap">
+        select a.id,a.username,a.real_name,a.create_time,c.name,a.status
+        from t_user a left join t_user_role b on a.id = b.user_id left join t_role c on b.role_id = c.id
+        <where>
+            <if test="username != null and username != ''">
+                and a.username like concat('%',#{username},'%')
+            </if>
+            <if test="id != null and id != ''">
+                and a.id = #{id}
+            </if>
+        </where>
+        limit #{offset}, #{pageSize}
+    </select>
 </mapper>

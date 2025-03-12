@@ -1,9 +1,13 @@
 package com.yaxingguo.goldenquote.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaxingguo.goldenquote.constants.ErrorConstants;
 import com.yaxingguo.goldenquote.dto.LoginDto;
+import com.yaxingguo.goldenquote.dto.PageInfoDto;
+import com.yaxingguo.goldenquote.dto.QueryUserDto;
 import com.yaxingguo.goldenquote.dto.RegisterDto;
+import com.yaxingguo.goldenquote.entity.Quotes;
 import com.yaxingguo.goldenquote.entity.User;
 import com.yaxingguo.goldenquote.entity.UserRole;
 import com.yaxingguo.goldenquote.exception.BusinessException;
@@ -11,7 +15,10 @@ import com.yaxingguo.goldenquote.mapper.UserMapper;
 import com.yaxingguo.goldenquote.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yaxingguo.goldenquote.utils.AESUtil;
+import com.yaxingguo.goldenquote.utils.PageUtil;
 import com.yaxingguo.goldenquote.utils.PasswordUtil;
+import com.yaxingguo.goldenquote.vo.PageResult;
+import com.yaxingguo.goldenquote.vo.QueryUserVo;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
@@ -91,5 +100,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userRoleService.save(userRole);
         return user;
 
+    }
+
+    @Override
+    public PageResult<QueryUserVo> listByConditions(QueryUserDto dto) {
+
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+
+        // 动态条件构建
+        if (StringUtils.isNotBlank(dto.getUsername())) {
+            wrapper.like("username", dto.getUsername());
+        }
+        if (dto.getId() > 0 ) {
+            wrapper.eq("id", dto.getId());
+        }
+        Integer total = Math.toIntExact(userMapper.selectCount(wrapper));
+        Integer page = dto.getPage();
+        Integer pageSize = dto.getPageSize();
+        // 分页参数处理
+        PageInfoDto pageInfo = PageUtil.getPageInfo(page, pageSize, total);
+        dto.setOffset(pageInfo.getOffset());
+        List<QueryUserVo> queryUserVos = userMapper.selectByCondition(dto);
+        return new PageResult<>(page, pageSize, total, pageInfo.getTotalPages(),queryUserVos);
     }
 }

@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yaxingguo.goldenquote.constants.ErrorConstants;
 import com.yaxingguo.goldenquote.constants.RedisKeyConstants;
+import com.yaxingguo.goldenquote.dto.PageInfoDto;
 import com.yaxingguo.goldenquote.entity.UserFavorites;
 import com.yaxingguo.goldenquote.exception.BusinessException;
 import com.yaxingguo.goldenquote.mapper.QuotesMapper;
 import com.yaxingguo.goldenquote.mapper.UserFavoritesMapper;
 import com.yaxingguo.goldenquote.service.IQuotesService;
 import com.yaxingguo.goldenquote.service.IUserFavoritesService;
+import com.yaxingguo.goldenquote.utils.PageUtil;
 import com.yaxingguo.goldenquote.utils.RedisService;
 import com.yaxingguo.goldenquote.vo.FavoriteQuotesVo;
 import com.yaxingguo.goldenquote.vo.PageResult;
@@ -99,14 +101,9 @@ public class UserFavoritesServiceImpl extends ServiceImpl<UserFavoritesMapper, U
         // 查询总数
         Integer total = userFavoritesMapper.countFavorites(userId);
         // 分页参数处理
-        page = page < 1 ? 1 : page;
-        pageSize = pageSize < 1 ? 10 : pageSize;
-        if (pageSize > 100) pageSize = 100; // 防止过大分页
-        // 计算分页参数
-        int totalPages = (int) Math.ceil((double)total / pageSize);
-        int offset = (page - 1) * pageSize;
-        List<FavoriteQuotesVo> favoriteQuotesVoPage = userFavoritesMapper.queryFavoritesWithDetailsByUserId(userId,bookId,offset,pageSize);
-        return new PageResult<>(page,pageSize,total,totalPages,favoriteQuotesVoPage);
+        PageInfoDto pageInfo = PageUtil.getPageInfo(page, pageSize, total);
+        List<FavoriteQuotesVo> favoriteQuotesVoPage = userFavoritesMapper.queryFavoritesWithDetailsByUserId(userId,bookId,pageInfo.getOffset(),pageSize);
+        return new PageResult<>(page,pageSize,total,pageInfo.getTotalPages(),favoriteQuotesVoPage);
     }
 
 
