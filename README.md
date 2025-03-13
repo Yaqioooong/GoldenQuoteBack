@@ -21,19 +21,20 @@
 - 书籍展示页
 ![书籍展示页](./src/main/resources/static/imgs/tg_image_2730446418.png)
 - 金句展示页
-![金句展示页](./src/main/resources/static/imgs/tg_image_3963106107.png)
+![金句展示页](./src/main/resources/static/imgs/tg_image_2627744574.png)
+- 金句分享页，支持复制、下载卡片，也支持复制纯文本
+![金句分享页](./src/main/resources/static/imgs/tg_image_2503925267.png)
 - 注册页
 ![注册页](./src/main/resources/static/imgs/tg_image_1705303305.png)
 - 登录页
 ![登录页](./src/main/resources/static/imgs/tg_image_1176734452.png)
 - 书籍管理页
-![书籍管理页1](./src/main/resources/static/imgs/tg_image_2867669029.png)
+![书籍管理页1](./src/main/resources/static/imgs/tg_image_2575305218.png)
 ![书籍管理页2](./src/main/resources/static/imgs/tg_image_3732984835.png)
 - 金句管理页
 ![金句管理页1](./src/main/resources/static/imgs/tg_image_2569851093.png)
 ![金句管理页2](./src/main/resources/static/imgs/tg_image_4022315747.png)
-- 收藏页(todo)
-
 ## todos
-- [] 检查已收藏金句，在页面展示，渲染按钮
-- [] 接入流光卡片API，实现金句分享功能（复制和下载图片）
+1. 用户管理页面接口开发
+2. dashboard接口开发
+3. 系统配置页接口开发
