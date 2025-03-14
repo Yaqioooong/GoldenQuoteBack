@@ -5,6 +5,9 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.yaxingguo.goldenquote.annotation.LogExec;
 import com.yaxingguo.goldenquote.dto.QueryUserDto;
 
+import com.yaxingguo.goldenquote.dto.UpdateRoleDto;
+import com.yaxingguo.goldenquote.entity.UserRole;
+import com.yaxingguo.goldenquote.exception.BusinessException;
 import com.yaxingguo.goldenquote.service.IUserService;
 import com.yaxingguo.goldenquote.vo.PageResult;
 import com.yaxingguo.goldenquote.vo.QueryUserVo;
@@ -12,11 +15,8 @@ import com.yaxingguo.goldenquote.vo.ResponseVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
@@ -58,6 +58,26 @@ public class UserController {
         dto.setPageSize(pageSize);
         PageResult<QueryUserVo> users = userService.listByConditions(dto);
         return ResponseVo.success(users);
+    }
+
+    /**
+     * 更改用户角色接口
+     */
+    @RequestMapping(value="/admin/updateRole",method = RequestMethod.POST)
+    @LogExec(requestMethod = "POST")
+    @ResponseBody
+    @SaCheckPermission("user:edit")
+    public ResponseVo updateRole(@RequestBody UserRole entity){
+        ResponseVo res = new ResponseVo();
+        try{
+            boolean flag = userService.updateRole(entity);
+            if (flag){
+                res = ResponseVo.success("更新成功");
+            }
+        }catch (BusinessException e){
+            res = ResponseVo.failure(e.getErr());
+        }
+        return res;
     }
 
 }

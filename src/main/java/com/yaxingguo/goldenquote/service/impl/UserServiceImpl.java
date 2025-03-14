@@ -3,15 +3,15 @@ package com.yaxingguo.goldenquote.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaxingguo.goldenquote.constants.ErrorConstants;
-import com.yaxingguo.goldenquote.dto.LoginDto;
-import com.yaxingguo.goldenquote.dto.PageInfoDto;
-import com.yaxingguo.goldenquote.dto.QueryUserDto;
-import com.yaxingguo.goldenquote.dto.RegisterDto;
+import com.yaxingguo.goldenquote.dto.*;
 import com.yaxingguo.goldenquote.entity.Quotes;
+import com.yaxingguo.goldenquote.entity.Role;
 import com.yaxingguo.goldenquote.entity.User;
 import com.yaxingguo.goldenquote.entity.UserRole;
 import com.yaxingguo.goldenquote.exception.BusinessException;
+import com.yaxingguo.goldenquote.mapper.RoleMapper;
 import com.yaxingguo.goldenquote.mapper.UserMapper;
+import com.yaxingguo.goldenquote.service.IRoleService;
 import com.yaxingguo.goldenquote.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yaxingguo.goldenquote.utils.AESUtil;
@@ -43,6 +43,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private UserRoleServiceImpl userRoleService;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public User getUserInfo(User userLogin) {
@@ -122,5 +125,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         dto.setOffset(pageInfo.getOffset());
         List<QueryUserVo> queryUserVos = userMapper.selectByCondition(dto);
         return new PageResult<>(page, pageSize, total, pageInfo.getTotalPages(),queryUserVos);
+    }
+
+    @Override
+    public boolean updateRole(UserRole entity) {
+        if (entity.getRoleId()<0 || entity.getUserId()<0){
+            throw new BusinessException(ErrorConstants.PARAM_ERROR);
+        }
+        User user = userMapper.selectById(entity.getUserId());
+        if (user==null){
+            throw new BusinessException(ErrorConstants.USER_NOT_EXIST);
+        }
+        Role role = roleMapper.selectById(entity.getRoleId());
+        if (role==null){
+            throw new BusinessException(ErrorConstants.ROLE_NOT_EXIST);
+        }
+        return userRoleService.updateById(entity);
     }
 }
