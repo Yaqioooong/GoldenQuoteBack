@@ -21,7 +21,9 @@ public enum ErrorConstants {
     DUPLICATE_FAVORITE("FAVORITE_ERR_002","重复收藏"),
     NO_FAVORITE_RECORD("FAVORITE_ERR_003","无收藏记录"),
     PARAM_ERROR("PARAM_ERR", "请校验参数"),
-    QUOTE_NOT_EXIST("QUOTE_ERR_001","quote不存在" )
+    QUOTE_NOT_EXIST("QUOTE_ERR_001","quote不存在" ),
+    USER_ALREADY_BANNED("USER_ERR_002","账号已被封禁,请勿重复操作"),
+    USER_NOT_BANNED("USER_ERR_003","账号未被封禁，请勿重复操作"),
     ;
 
     private String code;

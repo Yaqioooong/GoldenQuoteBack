@@ -3,9 +3,11 @@ package com.yaxingguo.goldenquote.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 
 import com.yaxingguo.goldenquote.annotation.LogExec;
+import com.yaxingguo.goldenquote.dto.AccountBanDto;
 import com.yaxingguo.goldenquote.dto.QueryUserDto;
 
 import com.yaxingguo.goldenquote.dto.UpdateRoleDto;
+import com.yaxingguo.goldenquote.entity.User;
 import com.yaxingguo.goldenquote.entity.UserRole;
 import com.yaxingguo.goldenquote.exception.BusinessException;
 import com.yaxingguo.goldenquote.service.IUserService;
@@ -79,5 +81,26 @@ public class UserController {
         }
         return res;
     }
+
+    /**
+     * 封禁/解封用户接口
+     */
+    @RequestMapping(value="/admin/ban",method = RequestMethod.POST)
+    @LogExec(requestMethod = "POST")
+    @ResponseBody
+    @SaCheckPermission("user:edit")
+    public ResponseVo updateStatus(@RequestBody AccountBanDto dto){
+        ResponseVo res = new ResponseVo();
+        try{
+            boolean flag = userService.banUser(dto);
+            if (flag){
+                res = ResponseVo.success(dto.isBan()?"已封禁账号":"已解封账号");
+            }
+        }catch (BusinessException e){
+            res = ResponseVo.failure(e.getErr());
+        }
+        return res;
+    }
+
 
 }

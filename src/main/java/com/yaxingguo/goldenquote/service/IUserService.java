@@ -1,10 +1,7 @@
 package com.yaxingguo.goldenquote.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yaxingguo.goldenquote.dto.LoginDto;
-import com.yaxingguo.goldenquote.dto.QueryUserDto;
-import com.yaxingguo.goldenquote.dto.RegisterDto;
-import com.yaxingguo.goldenquote.dto.UpdateRoleDto;
+import com.yaxingguo.goldenquote.dto.*;
 import com.yaxingguo.goldenquote.entity.User;
 import com.yaxingguo.goldenquote.entity.UserRole;
 import com.yaxingguo.goldenquote.vo.PageResult;
@@ -32,4 +29,6 @@ public interface IUserService extends IService<User> {
     PageResult<QueryUserVo> listByConditions(QueryUserDto dto);
 
     boolean updateRole(UserRole entity);
+
+    boolean banUser(AccountBanDto dto);
 }

@@ -2,6 +2,7 @@ package com.yaxingguo.goldenquote.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yaxingguo.goldenquote.constants.AccountStatusEnum;
 import com.yaxingguo.goldenquote.constants.ErrorConstants;
 import com.yaxingguo.goldenquote.dto.*;
 import com.yaxingguo.goldenquote.entity.Quotes;
@@ -141,5 +142,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new BusinessException(ErrorConstants.ROLE_NOT_EXIST);
         }
         return userRoleService.updateById(entity);
+    }
+
+    @Override
+    public boolean banUser(AccountBanDto dto) {
+        if (dto.getUserId()<0) {
+            throw new BusinessException(ErrorConstants.PARAM_ERROR);
+        }
+        User user = userMapper.selectById(dto.getUserId());
+        if (user==null){
+            throw new BusinessException(ErrorConstants.USER_NOT_EXIST);
+        }
+        if (dto.isBan() && user.getStatus() == AccountStatusEnum.LOCKED.getCode()){
+            throw new BusinessException(ErrorConstants.USER_ALREADY_BANNED);
+        }else if (!dto.isBan() && user.getStatus()== AccountStatusEnum.NORMAL.getCode()){
+            throw new BusinessException(ErrorConstants.USER_NOT_BANNED);
+        }
+        user.setStatus(dto.isBan()?AccountStatusEnum.LOCKED.getCode():AccountStatusEnum.NORMAL.getCode());
+        return userMapper.updateById(user)>0;
     }
 }
