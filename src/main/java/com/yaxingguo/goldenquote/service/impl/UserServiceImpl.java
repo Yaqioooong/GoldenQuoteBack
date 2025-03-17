@@ -161,4 +161,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setStatus(dto.isBan()?AccountStatusEnum.LOCKED.getCode():AccountStatusEnum.NORMAL.getCode());
         return userMapper.updateById(user)>0;
     }
+
+    @Override
+    public boolean logOff(User user) {
+        if (user!=null){
+            user.setStatus(AccountStatusEnum.DELETED.getCode());
+            return userMapper.updateById(user)>0;
+        }
+        return false;
+    }
 }

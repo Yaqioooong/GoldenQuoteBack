@@ -102,5 +102,25 @@ public class UserController {
         return res;
     }
 
+    /**
+     * 用户注销接口
+     */
+    @RequestMapping(value = "/admin/logoff" ,method = RequestMethod.POST)
+    @LogExec(requestMethod = "POST")
+    @ResponseBody
+//    @SaCheckPermission("user:edit")
+    public ResponseVo logOff(@RequestBody User user){
+        ResponseVo res = new ResponseVo();
+        try{
+            boolean flag = userService.logOff(user);
+            if (flag){
+                res = ResponseVo.success("注销成功");
+            }
+        }catch (BusinessException e){
+            res = ResponseVo.failure(e.getErr());
+        }
+        return res;
+    }
+
 
 }

@@ -31,4 +31,6 @@ public interface IUserService extends IService<User> {
     boolean updateRole(UserRole entity);
 
     boolean banUser(AccountBanDto dto);
+
+    boolean logOff(User user);
 }
