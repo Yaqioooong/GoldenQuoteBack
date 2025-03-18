@@ -37,6 +37,10 @@ public class ResponseVo {
         return new ResponseVo(false,e.getCode(), e.getMsg(), null);
     }
 
+    public static ResponseVo failure(int i, String message) {
+        return new ResponseVo(false,String.valueOf(i), message, null);
+    }
+
     @Override
     public String toString() {
         return "ResponseVo{" +
