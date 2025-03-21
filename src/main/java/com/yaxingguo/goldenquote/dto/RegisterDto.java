@@ -1,10 +1,14 @@
 package com.yaxingguo.goldenquote.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RegisterDto {
 
     @NotBlank(message = "用户名不能为空")
