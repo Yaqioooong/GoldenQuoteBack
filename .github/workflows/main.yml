@@ -15,7 +15,7 @@ jobs:
 
   build:
     # 运行在虚拟机上，指定虚拟机及其版本
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       # 端口号
       Port: 8080
