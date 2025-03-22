@@ -76,7 +76,6 @@ jobs:
           docker build -t ${FILE_NAME}:${VERSION} .    # 构建docker镜像，命令最后的点代表Dockerfile所在目录
           docker save -o  ${FILE_NAME}.tar  ${FILE_NAME}:${VERSION} # 保存压缩后的docker镜像，这一步是为了方便后面我们将该镜像上传至指定的服务器
 
-
       # 查看镜像文件大小
       - name: Print file size
         run: |
@@ -108,6 +107,17 @@ jobs:
             echo "Attempting to delete ${{env.Host_Dir}}/${{env.FILE_NAME}}.tar"
             rm -rf ${{env.Host_Dir}}/${{env.FILE_NAME}}.tar
 
+      - name: Create directory on server
+        uses: matheusvanzan/sshpass-action@v2
+        with:
+          host: ${{env.Host_IP}}
+          user: ${{env.Host_Role}}
+          pass: ${{env.Host_PWD}}
+          run: |
+            rm -f ${{env.Host_Dir}}
+            mkdir -p ${{env.Host_Dir}}
+            chmod 755 ${{env.Host_Dir}}
+            
       # 上传新的docker镜像
       - name: upload new docker image
         run: |
